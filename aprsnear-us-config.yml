@@ -1,0 +1,9 @@
+callsign: "CALLSIGN"
+sleep: 60
+logging_level: "info"
+aprs:
+    url: "http://api.aprs.fi/api/get?name={callsign}&what=loc&apikey={apikey}&format=json"
+    apikey: "apikey"
+spacenearus:
+    url: "http://spacenear.us/tracker/track.php?{data}"
+    password: "password"
