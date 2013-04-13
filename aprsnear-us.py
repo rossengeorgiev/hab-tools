@@ -18,6 +18,8 @@ class NoPositionData(Exception):
 class APRS(object):
     def __init__(self, config):
         self.callsign = config["callsign"]
+        self.spacenearus_callsign = config["spacenearus"]\
+                                        .get("callsign", self.callsign)
         self.sleep = config["sleep"]
         self.aprs_url = config["aprs"]["url"]
         self.aprs_apikey = config["aprs"]["apikey"]
@@ -44,7 +46,7 @@ class APRS(object):
         time_str = d.strftime("%H%M%S")
 
         post_data = {
-            "vehicle":  self.callsign,
+            "vehicle":  self.spacenearus_callsign,
             "time":     time_str,
             "lat":      data['lat'],
             "lon":      data['lng'],
