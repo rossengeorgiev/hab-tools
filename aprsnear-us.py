@@ -51,9 +51,11 @@ class APRS(object):
             "lat":      data['lat'],
             "lon":      data['lng'],
             "alt":      data.get('altitude', 0),
-            "data":     json.dumps({"comment": data['comment']}),
             "pass":     self.spacenearus_password
         }
+
+        if 'comment' in data:
+            post_data["data"] = json.dumps({"comment": data['comment']})
 
         logging.info("Got: {0}".format(post_data))
 
