@@ -15,6 +15,9 @@ class APRSServerFail(Exception):
 class NoPositionData(Exception):
     pass
 
+class DuplicateData(Exception):
+    pass
+
 class APRS(object):
     def __init__(self, config):
         self.callsign = config["callsign"]
@@ -25,6 +28,7 @@ class APRS(object):
         self.aprs_apikey = config["aprs"]["apikey"]
         self.spacenearus_url = config["spacenearus"]["url"]
         self.spacenearus_password = config["spacenearus"]["password"]
+        self.prev_timestamp = 0
 
     def get_aprs(self):
         logging.debug("Polling APRS")
@@ -42,7 +46,20 @@ class APRS(object):
 
         data = response['entries'][-1]
 
-        d = datetime.datetime.utcfromtimestamp(int(data["time"]))
+        """
+        time - the time when the target first reported this (current) position (the time of arrival at current coordinates)
+        lasttime - the time when the target last reported this (current) position
+        """
+        timestamp = int(data["time"])
+        #timestamp = int(data["lasttime"])
+
+        # duplicate data is discarded and not posted to spacenear.us
+        if self.prev_timestamp >= timestamp:
+            raise DuplicateData
+
+        self.prev_timestamp = timestamp
+
+        d = datetime.datetime.utcfromtimestamp(timestamp)
         time_str = d.strftime("%H%M%S")
 
         post_data = {
