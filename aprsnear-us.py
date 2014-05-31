@@ -92,6 +92,8 @@ class APRS(object):
                 self.post_spacenearus(self.get_aprs())
             except KeyboardInterrupt:
                 logging.debug("Exiting...")
+            except DuplicateData:
+                logging.debug("Got duplicate position data. Discarding...");
             except:
                 logging.exception("Exception; continuing")
 
