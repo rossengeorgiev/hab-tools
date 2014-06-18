@@ -64,6 +64,7 @@ class APRS(object):
 
         post_data = {
             "vehicle":  self.spacenearus_callsign,
+            "callsign": "APRS",
             "time":     time_str,
             "lat":      data['lat'],
             "lon":      data['lng'],
