@@ -3,7 +3,6 @@ sleep: 60
 logging_level: "info"
 aprs:
     url: "http://api.aprs.fi/api/get?name={callsign}&what=loc&apikey={apikey}&format=json"
-    tele_url: "http://aprs.fi/telemetry/a/{callsign}?range=day"
     apikey: "apikey"
 spacenearus:
     url: "http://spacenear.us/tracker/track.php?{data}"
