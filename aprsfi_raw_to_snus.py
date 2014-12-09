@@ -22,18 +22,30 @@ password = sys.argv[1]
 with open(sys.argv[2]) as f:
     packets = f.readlines()
 
-    count = 1
-    for line in packets:
-        print "Uploading position #%d..." % count,
-        count += 1
+    for idx, line in enumerate(packets):
 
         timestr, data = line.split(": ", 1)
         timestr = re.sub(r"[^0-9]", "", timestr)
 
         data = aprs.parse(data)
 
+        if data['format'] == 'telemetry-message':
+            print "Updating telemetery params line #%d..." % (idx+1),
+
+            if 'tEQNS' in data:
+                info['tEQNS'] = data['tEQNS']
+            if 'tPARM' in data:
+                info['tPARM'] = data['tPARM']
+            if 'tUNIT' in data:
+                info['tUNIT'] = data['tUNIT']
+
+            print 'ok'
+            continue
+
         if data['format'] not in ['compressed', 'uncompressed', 'mic-e']:
             continue
+
+        print "Uploading position line #%d..." % (idx+1),
 
         post_data = {
             "vehicle":  data['from'],

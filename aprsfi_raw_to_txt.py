@@ -7,7 +7,7 @@ from HTMLParser import HTMLParser
 
 
 def raw_lines(url):
-    html = urllib.urlopen(url).read()
+    html = urllib.urlopen(url).read().replace("\xc2\xa0", " ")
     hp = HTMLParser()
 
     lines = re.findall(r"^.*?'raw_line'.*?$", html, re.M)
