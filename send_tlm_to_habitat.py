@@ -10,7 +10,13 @@ if len(sys.argv) < 2:
     print "Usage: python %s <sentence> [recv callsign]" % sys.argv[0]
     sys.exit()
 
-sentence = b64encode(sys.argv[1])
+sentence = sys.argv[1]
+
+if not sentence.endswith('\n'):
+    sentence += '\n'
+
+sentence = b64encode(sentence)
+
 callsign = sys.argv[2] if len(sys.argv) > 2 else "HABTOOLS"
 
 date = datetime.utcnow().isoformat("T") + "Z"
